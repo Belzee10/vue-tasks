@@ -16,7 +16,7 @@
     </v-app-bar>
 
     <v-content>
-      <HelloWorld/>
+      <HelloWorld />
     </v-content>
   </v-app>
 </template>
@@ -27,10 +27,10 @@ import HelloWorld from './components/HelloWorld';
 export default {
   name: 'App',
   components: {
-    HelloWorld,
+    HelloWorld
   },
   data: () => ({
     //
-  }),
+  })
 };
 </script>
