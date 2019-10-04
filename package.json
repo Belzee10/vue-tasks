@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "startdb": "json-server --watch src/server/index.js",
-    "start": "concurrently \"yarn startdb\" \"yarn serve\"",
+    "dev": "json-server --watch src/server/index.js",
+    "start": "concurrently \"yarn dev\" \"yarn serve\"",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "test": "vue-cli-service test:unit",
