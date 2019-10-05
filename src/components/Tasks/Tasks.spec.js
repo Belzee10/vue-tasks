@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Vuetify from 'vuetify';
-import { mount } from '@vue/test-utils';
+import { shallowMount } from '@vue/test-utils';
 import Tasks from './Tasks.vue';
 import Task from '../Task/Task.vue';
 
@@ -12,7 +12,7 @@ describe('Tasks.vue', () => {
       { id: '2', title: '', description: '', isComplete: false }
     ]
   };
-  const wrapper = mount(Tasks, {
+  const wrapper = shallowMount(Tasks, {
     propsData: { ...props }
   });
 
