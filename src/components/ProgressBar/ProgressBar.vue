@@ -1,5 +1,9 @@
 <template>
-  <v-progress-linear :value="value" :active="active"></v-progress-linear>
+  <v-progress-linear
+    absolute
+    :value="value"
+    :active="active"
+  ></v-progress-linear>
 </template>
 
 <script>
