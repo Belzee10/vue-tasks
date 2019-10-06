@@ -18,6 +18,6 @@ describe('ProgressBar', () => {
       }
     });
     const progressBar = wrapper.find('.v-progress-linear');
-    expect(progressBar.element.style.height).not.toBe('px');
+    expect(progressBar.element.style.height).toBe('4px');
   });
 });
