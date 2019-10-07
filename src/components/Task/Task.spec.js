@@ -3,16 +3,14 @@ import Vuetify from 'vuetify';
 import { mount } from '@vue/test-utils';
 import Task from './Task.vue';
 
-// TODO find another way to stub Vuetify
 Vue.use(Vuetify);
 
-beforeEach(() => {
-  jest.useFakeTimers();
-});
-
 describe('Task.vue', () => {
+  beforeEach(() => {
+    jest.useFakeTimers();
+  });
   const props = {
-    id: '1',
+    id: 1,
     title: 'example',
     description: 'lotem ipsum',
     isComplete: false
@@ -37,4 +35,16 @@ describe('Task.vue', () => {
     button.trigger('click');
     expect(wrapper.emitted()['confirm-delete']).toBeTruthy();
   });
+
+  // test('should put the checkbox as checked and mark the text', () => {
+  //   const wrapper = mount(Task, {
+  //     propsData: {
+  //       ...props,
+  //       isComplete: true
+  //     }
+  //   });
+  //   const checkbox = wrapper.find('.v-input--checkbox');
+  // });
+
+  test('should emit a complete-task event', () => {});
 });

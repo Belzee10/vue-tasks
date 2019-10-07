@@ -8,8 +8,8 @@ Vue.use(Vuetify);
 describe('Tasks.vue', () => {
   const props = {
     tasks: [
-      { id: '1', title: '', description: '', isComplete: false },
-      { id: '2', title: '', description: '', isComplete: false }
+      { id: 1, title: '', description: '', isComplete: false },
+      { id: 2, title: '', description: '', isComplete: false }
     ]
   };
   const wrapper = shallowMount(Tasks, {

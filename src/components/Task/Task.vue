@@ -18,8 +18,8 @@ export default {
   name: 'Task',
   props: {
     id: {
-      type: String,
-      default: ''
+      type: Number,
+      default: 0
     },
     title: {
       type: String,
