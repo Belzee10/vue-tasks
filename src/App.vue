@@ -24,7 +24,16 @@
             >
               New Task
             </v-btn>
+            <v-alert
+              v-if="tasks.length === 0"
+              border="top"
+              color="secondary lighten-2"
+              dark
+            >
+              All tasks are completed
+            </v-alert>
             <tasks
+              v-else
               :tasks="tasks"
               @confirm-delete="handleDeleteTask"
               @complete="handleComplete"

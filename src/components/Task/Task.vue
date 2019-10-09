@@ -7,7 +7,7 @@
         @change="handleComplete"
       ></v-checkbox>
     </v-list-item-icon>
-    <v-list-item-content>
+    <v-list-item-content :class="getTypography">
       <v-list-item-title>{{ title }}</v-list-item-title>
       <v-list-item-subtitle>{{ description }} </v-list-item-subtitle>
     </v-list-item-content>
@@ -54,6 +54,9 @@ export default {
   computed: {
     getButtonColor() {
       return this.confirming ? 'error' : '';
+    },
+    getTypography() {
+      return this.complete ? 'font-italic font-weight-light' : '';
     }
   },
   watch: {

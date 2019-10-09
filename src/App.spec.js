@@ -6,7 +6,6 @@ import { getTasks } from './api/api.js';
 import mockAxios from 'jest-mock-axios';
 import App from './App.vue';
 import Task from './components/Task/Task.vue';
-import Tasks from './components/Tasks/Tasks.vue';
 import Modal from './components/Modal/Modal.vue';
 
 jest.mock('./api/api.js');
@@ -86,44 +85,47 @@ describe('App.vue', () => {
     expect(mockAxios.post).toHaveBeenCalledWith(url, expectedData);
   });
 
-  test('should send a delete request', () => {
-    const props = {
-      tasks: [{ id: 1, title: '', description: '', isComplete: false }]
-    };
+  test('should send a delete request', async () => {
+    const tasks = [{ id: 1, title: '', description: '', isComplete: false }];
+    getTasks.mockResolvedValueOnce(tasks);
     const wrapper = mount(App, {
       vuetify,
       localVue
     });
-    const tasks = wrapper.find(Tasks);
-    tasks.setProps({
-      ...props
-    });
+    await flushPromises();
     const button = wrapper.find('[data-test-id="confirm"]');
     button.trigger('click');
     button.trigger('click');
-    const url = `http://localhost:3100/tasks/${props.tasks[0].id}`;
+    const url = `http://localhost:3100/tasks/${tasks[0].id}`;
     expect(mockAxios.delete).toHaveBeenCalledWith(url);
   });
 
-  test('should send a put request', () => {
-    const props = {
-      tasks: [{ id: 1, title: '', description: '', isComplete: false }]
-    };
+  test('should send a put request', async () => {
+    const tasks = [{ id: 1, title: '', description: '', isComplete: false }];
+    getTasks.mockResolvedValueOnce(tasks);
     const wrapper = mount(App, {
       vuetify,
       localVue
     });
-    const tasks = wrapper.find(Tasks);
-    tasks.setProps({
-      ...props
-    });
+    await flushPromises();
     const checkbox = wrapper.find('input[type="checkbox"]');
     checkbox.setChecked();
-    const url = `http://localhost:3100/tasks/${props.tasks[0].id}`;
+    const url = `http://localhost:3100/tasks/${tasks[0].id}`;
     const expectedData = expect.objectContaining({
-      ...props.tasks[0],
-      isComplete: !props.tasks[0].isComplete
+      ...tasks[0],
+      isComplete: !tasks[0].isComplete
     });
     expect(mockAxios.put).toHaveBeenCalledWith(url, expectedData);
+  });
+
+  test('should show an Alert when there is not Tasks', async () => {
+    getTasks.mockResolvedValueOnce([]);
+    const wrapper = mount(App, {
+      vuetify,
+      localVue
+    });
+    await flushPromises();
+    const alert = wrapper.find('.v-alert');
+    expect(alert.exists()).toBeTruthy();
   });
 });
