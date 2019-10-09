@@ -1,21 +1,33 @@
-import Vue from 'vue';
 import Vuetify from 'vuetify';
-import { mount } from '@vue/test-utils';
+import { mount, createLocalVue } from '@vue/test-utils';
 import ProgressBar from './ProgressBar.vue';
 
-Vue.use(Vuetify);
+const localVue = createLocalVue();
+
 describe('ProgressBar', () => {
+  let vuetify;
+
+  beforeEach(() => {
+    vuetify = new Vuetify();
+  });
+
+  const mountFunction = options => {
+    return mount(ProgressBar, {
+      localVue,
+      vuetify,
+      ...options
+    });
+  };
+
   test('should hidden on initial render', () => {
-    const wrapper = mount(ProgressBar, {});
+    const wrapper = mountFunction();
     const progressBar = wrapper.find('.v-progress-linear');
     expect(progressBar.element.style.height).toBe('0px');
   });
 
   test('should be visible when the prop active changes', () => {
-    const wrapper = mount(ProgressBar, {
-      propsData: {
-        active: true
-      }
+    const wrapper = mountFunction({
+      propsData: { active: true }
     });
     const progressBar = wrapper.find('.v-progress-linear');
     expect(progressBar.element.style.height).toBe('4px');

@@ -1,9 +1,7 @@
-import Vue from 'vue';
 import Vuetify from 'vuetify';
 import { mount, createLocalVue } from '@vue/test-utils';
 import Modal from './Modal.vue';
 
-Vue.use(Vuetify);
 const localVue = createLocalVue();
 
 describe('Modal.vue', () => {
@@ -13,29 +11,26 @@ describe('Modal.vue', () => {
     vuetify = new Vuetify();
   });
 
-  const mountFunction = options => {
-    return mount(Modal, {
-      localVue,
+  test('should emit a "close-modal" event', () => {
+    const wrapper = mount(Modal, {
       vuetify,
-      ...options
-    });
-  };
-
-  test('should emit a close-modal event', () => {
-    const wrapper = mountFunction({
+      localVue,
       propsData: { open: true }
     });
-    const button = wrapper.find('[data-test-id="btn-secondary"]');
-    button.vm.$emit('click');
+    const button = wrapper.find('.secondary');
+    expect(button.text()).toContain('Close');
+    button.trigger('click');
     expect(wrapper.emitted()['close-modal']).toHaveLength(1);
   });
 
   test('should emit a submit-form event', () => {
-    const wrapper = mountFunction({
+    const wrapper = mount(Modal, {
+      vuetify,
+      localVue,
       propsData: { open: true }
     });
-    const button = wrapper.find('[data-test-id="btn-primary"]');
-    button.vm.$emit('click');
+    const button = wrapper.find('.primary');
+    button.trigger('click');
     expect(wrapper.emitted()['submit-form']).toHaveLength(1);
   });
 });

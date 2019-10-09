@@ -16,10 +16,10 @@
       </v-card-text>
       <v-divider></v-divider>
       <v-card-actions>
-        <v-btn data-test-id="btn-primary" color="primary" @click="onSubmit">
+        <v-btn color="primary" @click="onSubmit">
           Save
         </v-btn>
-        <v-btn data-test-id="btn-secondary" color="secondary" @click="onClose">
+        <v-btn color="secondary" @click="onClose">
           Close
         </v-btn>
       </v-card-actions>
