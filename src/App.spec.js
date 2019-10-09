@@ -104,4 +104,26 @@ describe('App.vue', () => {
     const url = `http://localhost:3100/tasks/${props.tasks[0].id}`;
     expect(mockAxios.delete).toHaveBeenCalledWith(url);
   });
+
+  test('should send a put request', () => {
+    const props = {
+      tasks: [{ id: 1, title: '', description: '', isComplete: false }]
+    };
+    const wrapper = mount(App, {
+      vuetify,
+      localVue
+    });
+    const tasks = wrapper.find(Tasks);
+    tasks.setProps({
+      ...props
+    });
+    const checkbox = wrapper.find('input[type="checkbox"]');
+    checkbox.setChecked();
+    const url = `http://localhost:3100/tasks/${props.tasks[0].id}`;
+    const expectedData = expect.objectContaining({
+      ...props.tasks[0],
+      isComplete: !props.tasks[0].isComplete
+    });
+    expect(mockAxios.put).toHaveBeenCalledWith(url, expectedData);
+  });
 });

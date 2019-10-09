@@ -1,7 +1,11 @@
 <template>
   <v-list-item>
     <v-list-item-icon>
-      <v-checkbox v-model="complete" color="primary"></v-checkbox>
+      <v-checkbox
+        v-model="complete"
+        color="primary"
+        @change="handleComplete"
+      ></v-checkbox>
     </v-list-item-icon>
     <v-list-item-content>
       <v-list-item-title>{{ title }}</v-list-item-title>
@@ -71,6 +75,14 @@ export default {
     handleDelete() {
       if (!this.confirming) this.confirming = true;
       else this.$emit('confirm-delete', this.id);
+    },
+    handleComplete() {
+      this.$emit('complete', {
+        id: this.id,
+        isComplete: this.complete,
+        title: this.title,
+        description: this.description
+      });
     }
   }
 };

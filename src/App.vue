@@ -24,7 +24,11 @@
             >
               New Task
             </v-btn>
-            <tasks :tasks="tasks" @confirm-delete="handleDeleteTask" />
+            <tasks
+              :tasks="tasks"
+              @confirm-delete="handleDeleteTask"
+              @complete="handleComplete"
+            />
           </v-flex>
         </v-layout>
       </v-container>
@@ -77,8 +81,19 @@ export default {
         const res = await axios.post('http://localhost:3100/tasks', {
           ...data
         });
-        this.tasks = [...this.tasks, res.data];
+        this.tasks = [res.data, ...this.tasks];
         this.closeModal();
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    // TODO fix this in tests
+    async handleComplete(data) {
+      const { id } = data;
+      try {
+        await axios.put(`http://localhost:3100/tasks/${id}`, {
+          ...data
+        });
       } catch (error) {
         console.log(error);
       }

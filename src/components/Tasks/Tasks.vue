@@ -6,6 +6,7 @@
         :key="task.id"
         v-bind="task"
         @confirm-delete="confirmDelete"
+        @complete="handleComplete"
       >
       </task>
     </v-list-item-group>
@@ -28,6 +29,9 @@ export default {
   methods: {
     confirmDelete(id) {
       this.$emit('confirm-delete', id);
+    },
+    handleComplete(data) {
+      this.$emit('complete', data);
     }
   }
 };
