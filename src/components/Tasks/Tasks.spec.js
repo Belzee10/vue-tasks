@@ -1,22 +1,30 @@
-import Vue from 'vue';
 import Vuetify from 'vuetify';
-import { shallowMount } from '@vue/test-utils';
+import { mount, createLocalVue } from '@vue/test-utils';
 import Tasks from './Tasks.vue';
 import Task from '../Task/Task.vue';
 
-Vue.use(Vuetify);
+const localVue = createLocalVue();
+
 describe('Tasks.vue', () => {
+  let vuetify;
+
+  beforeEach(() => {
+    vuetify = new Vuetify();
+  });
+
   const props = {
     tasks: [
       { id: 1, title: '', description: '', isComplete: false },
       { id: 2, title: '', description: '', isComplete: false }
     ]
   };
-  const wrapper = shallowMount(Tasks, {
-    propsData: { ...props }
-  });
 
   test('should render a Task for each Task', () => {
+    const wrapper = mount(Tasks, {
+      localVue,
+      vuetify,
+      propsData: { ...props }
+    });
     const tasks = wrapper.findAll(Task);
     expect(tasks).toHaveLength(props.tasks.length);
     tasks.wrappers.forEach((wrapper, i) => {
