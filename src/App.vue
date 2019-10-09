@@ -17,13 +17,14 @@
               @submit-form="submitForm"
             />
             <v-btn
+              class="mb-4 mt-5"
               data-test-id="create-task"
               color="primary"
               @click="openModal"
             >
               New Task
             </v-btn>
-            <tasks :tasks="tasks" />
+            <tasks :tasks="tasks" @confirm-delete="handleDeleteTask" />
           </v-flex>
         </v-layout>
       </v-container>
@@ -61,7 +62,16 @@ export default {
     closeModal() {
       this.isModalOpen = false;
     },
-    // TODO fix this
+    // TODO fix this in tests
+    async handleDeleteTask(id) {
+      try {
+        await axios.delete(`http://localhost:3100/tasks/${id}`);
+        this.tasks = this.tasks.filter(item => item.id !== id);
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    // TODO fix this in tests
     async submitForm(data) {
       try {
         const res = await axios.post('http://localhost:3100/tasks', {
@@ -72,10 +82,6 @@ export default {
       } catch (error) {
         console.log(error);
       }
-      // addTask(data).then(res => {
-      //   this.tasks = [...this.tasks, res];
-      // });
-      // this.closeModal();
     }
   }
 };

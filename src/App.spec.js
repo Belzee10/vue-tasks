@@ -6,6 +6,7 @@ import { getTasks } from './api/api.js';
 import mockAxios from 'jest-mock-axios';
 import App from './App.vue';
 import Task from './components/Task/Task.vue';
+import Tasks from './components/Tasks/Tasks.vue';
 import Modal from './components/Modal/Modal.vue';
 
 jest.mock('./api/api.js');
@@ -83,5 +84,24 @@ describe('App.vue', () => {
       description: 'desc'
     });
     expect(mockAxios.post).toHaveBeenCalledWith(url, expectedData);
+  });
+
+  test('should send a delete request', () => {
+    const props = {
+      tasks: [{ id: 1, title: '', description: '', isComplete: false }]
+    };
+    const wrapper = mount(App, {
+      vuetify,
+      localVue
+    });
+    const tasks = wrapper.find(Tasks);
+    tasks.setProps({
+      ...props
+    });
+    const button = wrapper.find('[data-test-id="confirm"]');
+    button.trigger('click');
+    button.trigger('click');
+    const url = `http://localhost:3100/tasks/${props.tasks[0].id}`;
+    expect(mockAxios.delete).toHaveBeenCalledWith(url);
   });
 });

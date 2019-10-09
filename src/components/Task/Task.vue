@@ -1,19 +1,22 @@
 <template>
   <v-list-item>
+    <v-list-item-icon>
+      <v-checkbox v-model="complete" color="primary"></v-checkbox>
+    </v-list-item-icon>
     <v-list-item-content>
       <v-list-item-title>{{ title }}</v-list-item-title>
       <v-list-item-subtitle>{{ description }} </v-list-item-subtitle>
-      <v-list-item-action>
-        <v-btn
-          :color="getButtonColor"
-          data-test-id="confirm"
-          @click="handleDelete"
-        >
-          <span v-if="confirming">Confirm</span>
-          <v-icon>mdi-delete</v-icon>
-        </v-btn>
-      </v-list-item-action>
     </v-list-item-content>
+    <v-list-item-action>
+      <v-btn
+        :color="getButtonColor"
+        data-test-id="confirm"
+        @click="handleDelete"
+      >
+        <span v-if="confirming">Confirm</span>
+        <v-icon>mdi-delete</v-icon>
+      </v-btn>
+    </v-list-item-action>
   </v-list-item>
 </template>
 
@@ -40,7 +43,8 @@ export default {
   },
   data: () => {
     return {
-      confirming: false
+      confirming: false,
+      complete: false
     };
   },
   computed: {
@@ -53,9 +57,12 @@ export default {
       if (this.confirming) {
         this.timer = setTimeout(() => {
           this.confirming = false;
-        }, 1000);
+        }, 2000);
       }
     }
+  },
+  created() {
+    this.complete = this.isComplete;
   },
   beforeDestroy() {
     clearTimeout(this.timer);
@@ -63,7 +70,7 @@ export default {
   methods: {
     handleDelete() {
       if (!this.confirming) this.confirming = true;
-      else this.$emit('confirm-delete');
+      else this.$emit('confirm-delete', this.id);
     }
   }
 };
