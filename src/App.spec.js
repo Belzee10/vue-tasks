@@ -6,7 +6,7 @@ import { getTasks } from './api/api.js';
 import mockAxios from 'jest-mock-axios';
 import App from './App.vue';
 import Task from './components/Task/Task.vue';
-// import Modal from './components/Modal/Modal.vue';
+import Modal from './components/Modal/Modal.vue';
 
 jest.mock('./api/api.js');
 
@@ -24,14 +24,6 @@ describe('App.vue', () => {
     mockAxios.reset();
   });
 
-  const mountFunction = options => {
-    return mount(App, {
-      localVue,
-      vuetify,
-      ...options
-    });
-  };
-
   test('should pass the tasks to the Tasks cmp', async () => {
     expect.assertions(3);
     const tasks = [
@@ -40,7 +32,10 @@ describe('App.vue', () => {
     ];
     getTasks.mockResolvedValueOnce(tasks);
 
-    const wrapper = mountFunction();
+    const wrapper = mount(App, {
+      vuetify,
+      localVue
+    });
     await flushPromises();
 
     const Tasks = wrapper.findAll(Task);
@@ -51,36 +46,42 @@ describe('App.vue', () => {
     });
   });
 
-  // test('should open the Modal', () => {
-  //   const wrapper = mountFunction();
-  //   expect(wrapper.find(Modal).exists()).toBeFalsy();
-  //   const button = wrapper.find('[data-test-id="create-task"]');
-  //   button.trigger('click');
-  //   expect(wrapper.find(Modal).exists()).toBeTruthy();
-  // });
+  test('should open the Modal', () => {
+    const wrapper = mount(App, {
+      vuetify,
+      localVue
+    });
+    expect(wrapper.find(Modal).exists()).toBeFalsy();
+    const button = wrapper.find('.primary');
+    button.trigger('click');
+    expect(wrapper.find(Modal).exists()).toBeTruthy();
+  });
 
-  // test('should send a post request', () => {
-  //   const wrapper = mountFunction();
-  //   wrapper.find('[data-test-id="create-task"]').trigger('click');
-  //   expect(wrapper.find(Modal).exists()).toBeTruthy();
-  //   const titleInput = wrapper.find('.title input');
-  //   const descriptionInput = wrapper.find('.description input');
-  //   titleInput.setValue('lorem');
-  //   descriptionInput.setValue('desc');
-  //   wrapper.find('[data-test-id="btn-primary"]').trigger('click');
-  //   expect(wrapper.find(Modal).emitted('submit-form')).toEqual([
-  //     [
-  //       {
-  //         title: 'lorem',
-  //         description: 'desc'
-  //       }
-  //     ]
-  //   ]);
-  //   const url = 'http://localhost:3100/tasks';
-  //   const expectedData = expect.objectContaining({
-  //     title: 'lorem',
-  //     description: 'desc'
-  //   });
-  //   expect(mockAxios.post).toHaveBeenCalledWith(url, expectedData);
-  // });
+  test('should send a post request', () => {
+    const wrapper = mount(App, {
+      vuetify,
+      localVue
+    });
+    wrapper.find('.primary').trigger('click');
+    expect(wrapper.find(Modal).exists()).toBeTruthy();
+    const titleInput = wrapper.find('.title input');
+    const descriptionInput = wrapper.find('.description input');
+    titleInput.setValue('lorem');
+    descriptionInput.setValue('desc');
+    wrapper.find('[data-test-id="save"]').trigger('click');
+    expect(wrapper.find(Modal).emitted('submit-form')).toEqual([
+      [
+        {
+          title: 'lorem',
+          description: 'desc'
+        }
+      ]
+    ]);
+    const url = 'http://localhost:3100/tasks';
+    const expectedData = expect.objectContaining({
+      title: 'lorem',
+      description: 'desc'
+    });
+    expect(mockAxios.post).toHaveBeenCalledWith(url, expectedData);
+  });
 });

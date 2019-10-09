@@ -4,7 +4,11 @@
       <v-list-item-title>{{ title }}</v-list-item-title>
       <v-list-item-subtitle>{{ description }} </v-list-item-subtitle>
       <v-list-item-action>
-        <v-btn :color="getButtonColor" @click="handleDelete">
+        <v-btn
+          :color="getButtonColor"
+          data-test-id="confirm"
+          @click="handleDelete"
+        >
           <span v-if="confirming">Confirm</span>
           <v-icon>mdi-delete</v-icon>
         </v-btn>
